@@ -1,0 +1,52 @@
+name: Build Hugo site
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  HUGO_VERSION: "0.169.0"
+  HUGO_ENV: production
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Hugo (extended)
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: ${{ env.HUGO_VERSION }}
+          extended: true
+
+      - name: Show Hugo version
+        run: hugo version
+
+      - name: Build site
+        run: hugo --minify --gc --baseURL "${{ vars.HUGO_BASEURL || 'https://blog.deepheads.ru/' }}"
+
+      - name: Check build output
+        run: |
+          test -f public/index.html || { echo "::error::public/index.html not found"; exit 1; }
+          echo "Built $(find public -type f | wc -l) files, $(du -sh public | cut -f1) total"
+
+      - name: Upload site artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: hugo-site-${{ github.sha }}
+          path: public
+          if-no-files-found: error
+          retention-days: 14
