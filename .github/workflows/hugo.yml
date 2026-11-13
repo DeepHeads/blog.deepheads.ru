@@ -1,4 +1,4 @@
-name: Build Hugo site
+name: Build and deploy Hugo site
 
 on:
   push:
@@ -8,24 +8,19 @@ on:
 permissions:
   contents: read
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
-
 env:
   HUGO_VERSION: "0.169.0"
   HUGO_ENV: production
 
 jobs:
+  # Build runs on GitHub-hosted runners: safe for PRs from forks.
   build:
     name: Build
-    runs-on: [self-hosted, linux, x64, hugo]
+    runs-on: ubuntu-latest
     timeout-minutes: 15
-    # The repo is public and the runner is self-hosted: never execute code
-    # from fork PRs on our own machine.
-    if: >-
-      github.event_name != 'pull_request' ||
-      github.event.pull_request.head.repo.full_name == github.repository
+    concurrency:
+      group: build-${{ github.ref }}
+      cancel-in-progress: true
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -52,7 +47,43 @@ jobs:
       - name: Upload site artifact
         uses: actions/upload-artifact@v4
         with:
-          name: hugo-site-${{ github.sha }}
+          name: hugo-site
           path: public
           if-no-files-found: error
           retention-days: 14
+
+  # Deploy runs on the self-hosted runner, only for main after a successful build.
+  deploy:
+    name: Deploy
+    needs: build
+    if: >-
+      github.ref == 'refs/heads/main' &&
+      (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+    runs-on: [self-hosted, linux, x64, deploy]
+    timeout-minutes: 10
+    concurrency:
+      group: deploy-blog
+      cancel-in-progress: false
+    steps:
+      - name: Download site artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: hugo-site
+          path: site
+
+      - name: Deploy to webroot
+        run: |
+          set -euo pipefail
+          DEST=/home/ubuntu/blog.deepheads.ru
+          test -f site/index.html || { echo "::error::artifact has no index.html"; exit 1; }
+          rsync -a --delete --chmod=D755,F644 --stats site/ "$DEST"/
+          test -f "$DEST/index.html"
+          echo "Deployed $(find "$DEST" -type f | wc -l) files"
+
+      - name: Verify live site
+        run: |
+          set -euo pipefail
+          code=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 15 \
+            --resolve blog.deepheads.ru:443:127.0.0.1 https://blog.deepheads.ru/)
+          echo "https://blog.deepheads.ru/ -> $code"
+          test "$code" = "200"
