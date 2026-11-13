@@ -76,7 +76,8 @@ jobs:
           set -euo pipefail
           DEST=/home/ubuntu/blog.deepheads.ru
           test -f site/index.html || { echo "::error::artifact has no index.html"; exit 1; }
-          rsync -a --delete --chmod=D755,F644 --stats site/ "$DEST"/
+          # no -a: the webroot has dirs owned by other users, we may only write content
+          rsync -rlt --delete --omit-dir-times --chmod=D755,F644 --stats site/ "$DEST"/
           test -f "$DEST/index.html"
           echo "Deployed $(find "$DEST" -type f | wc -l) files"
 
