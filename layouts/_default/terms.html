@@ -1,0 +1,12 @@
+{{/* DeepHeads override */}}
+{{ define "main" }}
+<section class="dh-section dh-section-tight">
+  <div class="dh-wrap">
+    <ul class="dh-terms">
+      {{ range .Data.Terms.ByCount }}
+      <li><a href="{{ .Page.Permalink }}"><span>{{ .Page.Title }}</span><b>{{ .Count }}</b></a></li>
+      {{ end }}
+    </ul>
+  </div>
+</section>
+{{ end }}

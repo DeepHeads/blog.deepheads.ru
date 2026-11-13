@@ -1,0 +1,29 @@
+{{/* DeepHeads override: blog home */}}
+{{ define "main" }}
+<section class="dh-blog-head">
+  <div class="dh-wrap">
+    <p class="dh-eyebrow">Блог DeepHeads</p>
+    <h1>Заметки инженеров.</h1>
+    <p class="dh-lede">Разбираем бортовой ИИ, российскую элементную базу и роевые системы на практике.</p>
+  </div>
+</section>
+<section class="dh-section">
+  <div class="dh-wrap">
+    {{ $paginator := .Paginate (where site.RegularPages "Section" "blog") }}
+    <div class="dh-grid {{ if eq $paginator.PageNumber 1 }}has-lead{{ end }}">
+      {{ range $paginator.Pages }}{{ .Render "post" }}{{ end }}
+    </div>
+    {{ if gt $paginator.TotalPages 1 }}
+    <nav class="dh-pager" aria-label="Страницы">
+      {{ if $paginator.HasPrev }}<a class="dh-pill dh-pill-ghost dh-pill-sm" href="{{ $paginator.Prev.URL }}">‹ Новее</a>{{ end }}
+      <span class="dh-mono">{{ $paginator.PageNumber }} / {{ $paginator.TotalPages }}</span>
+      {{ if $paginator.HasNext }}<a class="dh-pill dh-pill-ghost dh-pill-sm" href="{{ $paginator.Next.URL }}">Раньше ›</a>{{ end }}
+    </nav>
+    {{ end }}
+    <div class="dh-strip">
+      <span>Анонсы новых статей выходят в Telegram-канале.</span>
+      <a class="dh-pill dh-pill-ghost dh-pill-sm" href="https://t.me/deepheads" target="_blank" rel="noopener">t.me/deepheads</a>
+    </div>
+  </div>
+</section>
+{{ end }}

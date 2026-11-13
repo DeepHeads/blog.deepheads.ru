@@ -1,0 +1,5 @@
+{{/* DeepHeads: details/summary block (compatible with Hugo's built-in "details") */}}
+<details class="dh-details"{{ if .Get "open" }} open{{ end }}>
+  <summary>{{ .Get "summary" | default "Подробнее" }}</summary>
+  {{ .Inner | .Page.RenderString (dict "display" "block") }}
+</details>

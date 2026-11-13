@@ -1,0 +1,17 @@
+{{/* DeepHeads override: theme styles + DeepHeads design layer (assets/css/deepheads.css) */}}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+{{ $styles := slice }}
+{{ range site.Params.plugins.css }}
+{{ if findRE "^http" .link }}
+{{ if not (findRE "Mulish" .link) }}<link rel="stylesheet" href="{{ .link | absURL }}">{{ end }}
+{{ else }}
+{{ $styles = $styles | append (resources.Get .link) }}
+{{ end }}
+{{ end }}
+{{ $styles = $styles | append (resources.Get "scss/style.scss" | resources.ExecuteAsTemplate "style.main.scss" . | toCSS | minify) }}
+{{ $styles = $styles | append (resources.Get "css/deepheads.css") }}
+{{ $styles = $styles | resources.Concat "/css/vendor.css" | minify | fingerprint "sha512" }}
+<meta name="theme-color" content="#ffffff">
+<style type="text/css">{{ $styles.Content | safeCSS }}</style>

@@ -1,0 +1,16 @@
+{{/* DeepHeads override: post card */}}
+<article class="dh-card">
+  {{ if .Params.image }}
+  <a class="dh-card-img" href="{{ .Permalink }}" tabindex="-1" aria-hidden="true">
+    {{ partial "image.html" (dict "Src" .Params.image "Class" "" "Alt" "") }}
+  </a>
+  {{ end }}
+  <div class="dh-card-body">
+    <div class="dh-meta">
+      {{ with .Params.categories }}<a class="dh-cat" href="{{ `categories/` | absURL }}{{ index . 0 | urlize }}/">{{ index . 0 }}</a>{{ end }}
+      <span>{{ partial "date.html" .PublishDate }}</span>
+    </div>
+    <h3><a href="{{ .Permalink }}">{{ .Title }}</a></h3>
+    <p>{{ .Summary | plainify | truncate 200 }}</p>
+  </div>
+</article>

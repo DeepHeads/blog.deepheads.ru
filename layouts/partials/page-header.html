@@ -1,0 +1,16 @@
+{{/* DeepHeads override */}}
+<section class="dh-page-head">
+  <div class="dh-wrap">
+    {{ if and (or (eq .Section "tags") (eq .Section "categories")) (ne .Kind "taxonomy") }}
+    <p class="dh-eyebrow">{{ if eq .Section "tags" }}Метка{{ else }}Категория{{ end }}</p>
+    <h1>{{ .Title }}</h1>
+    {{ else if eq .Section "tags" }}
+    <p class="dh-eyebrow">Блог</p><h1>Метки</h1>
+    {{ else if eq .Section "categories" }}
+    <p class="dh-eyebrow">Блог</p><h1>Категории</h1>
+    {{ else }}
+    <p class="dh-eyebrow"><a href="{{ site.BaseURL }}">Блог</a></p>
+    <h1>{{ .Title | markdownify }}</h1>
+    {{ end }}
+  </div>
+</section>

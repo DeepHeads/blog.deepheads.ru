@@ -1,0 +1,59 @@
+{{/* DeepHeads override: article */}}
+{{ define "main" }}
+{{ if eq .Section "blog" }}
+<article class="dh-article">
+  <div class="dh-wrap">
+    <a class="dh-back" href="{{ site.BaseURL }}">‹ Все статьи</a>
+    <div class="dh-art-head">
+      <div class="dh-meta">
+        {{ with .Params.categories }}<a class="dh-cat" href="{{ `categories/` | absURL }}{{ index . 0 | urlize }}/">{{ index . 0 }}</a>{{ end }}
+        <span>{{ partial "date.html" .PublishDate }}</span>
+        <span>{{ .ReadingTime }} мин чтения</span>
+      </div>
+      <h1>{{ .Title }}</h1>
+      {{ with .Params.author }}{{ with site.GetPage (printf "author/%s" (. | urlize | lower)) }}
+      <a class="dh-byline" href="{{ .Permalink }}">
+        {{ partial "image.html" (dict "Src" .Params.image "Size" "72x72" "Class" "" "Alt" "") }}
+        <span>{{ .Title }}</span>
+      </a>
+      {{ end }}{{ end }}
+    </div>
+    {{ with .Params.image }}
+    <figure class="dh-cover">{{ partial "image.html" (dict "Src" . "Class" "" "Alt" "") }}</figure>
+    {{ end }}
+    <div class="content dh-prose">
+      {{ .Content }}
+    </div>
+    <div class="dh-art-foot">
+      <div class="dh-tags">
+        {{ range .Params.tags }}<a class="dh-chip" href="{{ `tags/` | absURL }}{{ . | urlize }}/">#{{ . }}</a>{{ end }}
+      </div>
+      <div class="dh-share">
+        <a class="dh-pill dh-pill-ghost dh-pill-sm" href="https://t.me/share/url?url={{ .Permalink | urlquery }}&text={{ .Title | urlquery }}" target="_blank" rel="noopener">Поделиться в Telegram</a>
+      </div>
+    </div>
+    {{ with .Params.author }}{{ with site.GetPage (printf "author/%s" (. | urlize | lower)) }}
+    <aside class="dh-author">
+      {{ partial "image.html" (dict "Src" .Params.image "Size" "160x160" "Class" "" "Alt" .Title) }}
+      <div>
+        <p class="dh-eyebrow">Автор</p>
+        <h3><a href="{{ .Permalink }}">{{ .Title }}</a></h3>
+        <p>{{ .Summary | plainify | truncate 260 }}</p>
+      </div>
+    </aside>
+    {{ end }}{{ end }}
+    {{ $related := where (where site.RegularPages "Section" "blog") "Permalink" "!=" .Permalink }}
+    {{ with $related }}
+    <section class="dh-related">
+      <h2>Читайте также</h2>
+      <div class="dh-grid">{{ range first 2 . }}{{ .Render "post" }}{{ end }}</div>
+    </section>
+    {{ end }}
+  </div>
+</article>
+{{ else }}
+<section class="dh-section dh-section-tight">
+  <div class="dh-wrap"><div class="content dh-prose">{{ .Content }}</div></div>
+</section>
+{{ end }}
+{{ end }}

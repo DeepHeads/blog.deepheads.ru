@@ -1,0 +1,17 @@
+{{/* DeepHeads override */}}
+{{ define "main" }}
+{{ if or (eq .Section "blog") (eq .Section "categories") (eq .Section "tags") }}
+{{ if eq .Section "blog" }}{{ partial "page-header.html" . }}{{ end }}
+<section class="dh-section dh-section-tight">
+  <div class="dh-wrap">
+    <div class="dh-grid">
+      {{ range .Pages }}{{ .Render "post" }}{{ end }}
+    </div>
+  </div>
+</section>
+{{ else }}
+<section class="dh-section dh-section-tight">
+  <div class="dh-wrap"><div class="content dh-prose">{{ .Content }}</div></div>
+</section>
+{{ end }}
+{{ end }}

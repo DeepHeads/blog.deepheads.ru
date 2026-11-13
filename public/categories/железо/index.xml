@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>Железо on Блог DeepHeads</title>
+		<link>https://blog.deepheads.ru/categories/%D0%B6%D0%B5%D0%BB%D0%B5%D0%B7%D0%BE/</link>
+		<description>Recent content in Железо on Блог DeepHeads</description>
+		<generator>Hugo</generator>
+		<language>en</language>
+		
+		
+		
+		
+			<lastBuildDate>Tue, 20 Jan 2026 20:54:45 +0000</lastBuildDate>
+		
+			<atom:link href="https://blog.deepheads.ru/categories/%D0%B6%D0%B5%D0%BB%D0%B5%D0%B7%D0%BE/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>Существуют ли российские микроконтроллеры для дронов и роботов?</title>
+				<link>https://blog.deepheads.ru/blog/post-2/</link>
+				<pubDate>Tue, 20 Jan 2026 20:54:45 +0000</pubDate>
+				<guid>https://blog.deepheads.ru/blog/post-2/</guid>
+				<description>&lt;p&gt;Российские микроконтроллеры, такие как Baikal-U (BE-U1000) от &amp;ldquo;Байкал Электроникс&amp;rdquo;, К1921ВК01Т от НИИЭТ и 1892ВГ1Я компании НПЦ &amp;ldquo;ЭЛВИС&amp;rdquo;, разрабатываются для импортозамещения аналогов STM32 и применяются в АСУ ТП, IoT и управлении двигателями. В статье рассматривается их применимость в полётных контроллерах для дронов и роботов.&lt;/p&gt;</description>
+			</item>
+	</channel>
+</rss>

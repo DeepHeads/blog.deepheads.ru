@@ -1,0 +1,68 @@
+{{/* DeepHeads override: shared navigation with deepheads.ru */}}
+{{ $main := site.Params.siteURL | default "https://deepheads.ru" }}
+{{ $nav := slice }}
+{{/* Пункты и порядок такие же, как в меню на deepheads.ru: Продукты, Услуги, Аналитика, О нас, Блог + кнопка «Связаться». */}}
+{{/* Весь этот сайт и есть раздел «Блог», поэтому он подсвечен на каждой странице. */}}
+{{ $nav = $nav | append (dict "n" "Продукты" "u" (printf "%s/#products" $main)) }}
+{{ $nav = $nav | append (dict "n" "Услуги" "u" (printf "%s/#services" $main)) }}
+{{ $nav = $nav | append (dict "n" "Аналитика" "u" (printf "%s/analitics/index.html" $main)) }}
+{{ $nav = $nav | append (dict "n" "О нас" "u" (printf "%s/#about" $main)) }}
+{{ $nav = $nav | append (dict "n" "Блог" "u" site.BaseURL "act" true) }}
+<header class="dh-nav">
+  <div class="dh-wrap dh-nav-in">
+    <a class="dh-brand" href="{{ $main }}/" aria-label="DeepHeads — на главную">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="5" y="5" width="14" height="14" rx="3" stroke="currentColor" stroke-width="1.6"/><rect x="9" y="9" width="6" height="6" rx="1" fill="currentColor"/><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      DeepHeads <span class="dh-brand-sub">Блог</span>
+    </a>
+    <nav class="dh-links" aria-label="Основная навигация">
+      {{ range $nav }}
+      <a href="{{ .u }}"{{ if .act }} class="is-active"{{ end }}>{{ .n }}</a>
+      {{ end }}
+    </nav>
+    <div class="dh-actions">
+      {{ if site.Params.search }}
+      <button class="search-toggle dh-icon-btn" data-toggle="search" aria-label="Поиск по блогу">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="6.5" stroke="currentColor" stroke-width="1.7"/><path d="m16 16 4.5 4.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+      </button>
+      {{ end }}
+      <a class="dh-pill dh-pill-blue dh-pill-sm" href="{{ $main }}/#contact">Связаться</a>
+    </div>
+    <button class="dh-burger" type="button" aria-label="Меню" aria-expanded="false" aria-controls="dh-mobile-menu">
+      <svg class="dh-burger-icon dh-burger-open" viewBox="0 0 24 24" width="22" height="22" fill="none" aria-hidden="true"><path d="M3.5 7h17M3.5 12h17M3.5 17h17" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      <svg class="dh-burger-icon dh-burger-close" viewBox="0 0 24 24" width="22" height="22" fill="none" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+
+  <div class="dh-mobile" id="dh-mobile-menu" aria-hidden="true">
+    <nav class="dh-mobile-nav" aria-label="Мобильная навигация">
+      {{ range $nav }}
+      <a href="{{ .u }}"{{ if .act }} class="is-active"{{ end }}>{{ .n }}</a>
+      {{ end }}
+    </nav>
+    <div class="dh-mobile-foot">
+      {{ if site.Params.search }}
+      <button class="dh-mobile-search" type="button" data-toggle="search">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="6.5" stroke="currentColor" stroke-width="1.7"/><path d="m16 16 4.5 4.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+        Поиск по блогу
+      </button>
+      {{ end }}
+      <a class="dh-pill dh-pill-blue" href="{{ $main }}/#contact">Связаться</a>
+    </div>
+  </div>
+</header>
+<div class="dh-scrim" aria-hidden="true"></div>
+
+{{ if site.Params.search }}
+<div class="search-block">
+  <div data-toggle="search-close" aria-label="Закрыть поиск">
+    <i class="las la-times"></i>
+  </div>
+  <form action="{{ `search` | relURL }}">
+    <input id="search-query" name="s" type="search" placeholder="Что ищем? Например, RK3588" class="text-center" aria-label="Поисковый запрос">
+  </form>
+</div>
+{{ end }}
+
+{{ $navjs := resources.Get "js/dh-nav.js" | minify | fingerprint "sha512" }}
+<script src="{{ $navjs.RelPermalink }}" integrity="{{ $navjs.Data.Integrity }}" defer></script>
+

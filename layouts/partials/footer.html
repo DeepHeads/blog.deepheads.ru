@@ -1,0 +1,24 @@
+{{/* DeepHeads override */}}
+{{ $main := site.Params.siteURL | default "https://deepheads.ru" }}
+<footer class="dh-footer">
+  <div class="dh-wrap">
+    <div class="dh-foot-cta">
+      <div>
+        <p class="dh-eyebrow">DeepHeads · Embedded AI</p>
+        <p class="dh-foot-title">Продукты для edge AI, ПО и разработка электроники на заказ.</p>
+      </div>
+      <div class="dh-row">
+        <a class="dh-pill dh-pill-blue" href="{{ $main }}/#products">Смотреть продукты</a>
+        <a class="dh-pill dh-pill-ghost" href="https://t.me/deepheads" target="_blank" rel="noopener">t.me/deepheads</a>
+      </div>
+    </div>
+    <div class="dh-foot-bottom">
+      <ul class="dh-foot-menu">
+        {{ range site.Menus.footer }}
+        <li><a href="{{ .URL | absURL }}">{{ .Name }}</a></li>
+        {{ end }}
+      </ul>
+      <span>© {{ now.Year }} DeepHeads · <a href="{{ $main }}/">deepheads.ru</a></span>
+    </div>
+  </div>
+</footer>
