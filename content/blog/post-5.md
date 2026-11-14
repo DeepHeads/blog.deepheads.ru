@@ -1,10 +1,10 @@
 ---
-title: "Симуляторы архитектурного уровня SoC: QEMU, Renode и gem5"
+title: "I. Агент для VLM ASIC: симуляторы архитектурного уровня"
 image: "images/post5_1.png"
 date: 2026-11-13T00:00:00.000Z
 author: "sbryukov"
 tags: ["симуляция", "QEMU", "Renode", "gem5", "архитектура", "SoC", "EDA"]
-categories: ["анализ"]
+categories: ["VLM ASIC","ИИ Агенты", "Инструменты"]
 draft: false
 ---
 
