@@ -46,5 +46,5 @@ what_i_do:
 DeepHeads — это мощная команда HW и SW инженеров.
 
 
-[Продукты и проекты с нашим участием.](https://deepheads.ru/works.html)
+[Продукты и проекты с нашим участием.](https://deepheads.ru)
 
