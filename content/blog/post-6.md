@@ -1,7 +1,7 @@
 ---
-title: "II. Агент для VLM ASIC: архитектурные вызовы"
+title: "II. VLM ASIC: архитектурные вызовы"
 image: "images/post6_1.png"
-date: 2026-11-21T00:00:00.000Z
+date: 2026-11-24T00:00:00.000Z
 author: "sbryukov"
 tags: ["VLM", "ASIC", "edge AI", "архитектура", "SoC", "roofline", "EDA"]
 categories: ["VLM ASIC", "ИИ Агенты", "Инструменты"]
